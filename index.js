@@ -50,6 +50,16 @@ function playSequence(element) {
     playSound(element);
 }
 
+async function asyncPlaySequence(gamePattern) {
+    for (var index = 0; index < gamePattern.length; index += 1) {
+        await new Promise(function(resolve, _reject) {
+            setTimeout(function() {
+                resolve(playSequence(gamePattern[index]));
+            }, 1000);
+        });
+    }
+}
+
 function nextSequence() {
     userClickedPattern = [];
     level++;
@@ -58,11 +68,7 @@ function nextSequence() {
     var randomChosenColour = buttonColours[randomNumber];
     gamePattern.push(randomChosenColour);
 
-    for (let index = 0; index < gamePattern.length; index++) {
-        setTimeout(function() {
-            playSequence(gamePattern[index]);
-        }, 1000);
-    }
+    asyncPlaySequence(gamePattern);
 }
 
 function playSound(name) {
